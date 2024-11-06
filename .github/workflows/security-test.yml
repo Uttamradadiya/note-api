@@ -1,0 +1,63 @@
+52.name: Run test suite on PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: set up Python 
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Install development dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Run pytest
+        run: pytest --cov=note_api -n auto
+      - name: Upload coverage to Codcov
+        uses: codcov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage to CodeClimate
+        uses: paambaati/codeclimate-action@v2
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPORTER_ID }} 
+
+  security_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/snyk@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  build_and_push_docker:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}:latest
