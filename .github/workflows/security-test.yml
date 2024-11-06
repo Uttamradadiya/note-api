@@ -27,7 +27,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - name: Upload coverage to CodeClimate
-        uses: paambaati/codeclimate-action@v2
+        uses: paambaati/codeclimate-action@v3
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_REPORTER_ID }} 
 
@@ -37,8 +37,15 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Set up Snyk
+        uses: snyk/actions/setup@v2
+        with:
+          version: 'latest'
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       - name: Run Snyk security scan
-        uses: snyk/actions/snyk@master
+        run: snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
