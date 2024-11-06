@@ -1,4 +1,4 @@
-52.name: Run test suite on PR
+name: Run test suite on PR
 
 on:
   pull_request:
