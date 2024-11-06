@@ -43,7 +43,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   build_and_push_docker:
-    needs: build_and_test
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
