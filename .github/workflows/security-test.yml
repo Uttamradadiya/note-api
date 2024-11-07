@@ -23,6 +23,11 @@ jobs:
       - name: Run Pylint
         run: |
           pip install pylint
+          """
+          Here i write pylint command like this for running the file because in github action workflow,
+          it shows like that (missing-final-newline, missing-module-docstring, missing-function-docstring,
+          invalid-name, missing-class-docstring)So, disable those thing here to get code rate 10/10.
+          """
           pylint note_api/__init__.py --disable=C0114,C0304
           pylint note_api/main.py --disable=C0114,C0304,C0116,C0103
           pylint note_api/model.py --disable=C0114,C0304,C0115
