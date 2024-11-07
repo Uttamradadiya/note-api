@@ -1,4 +1,4 @@
-name: Run test suite on PR
+name: Upload Coverage and Check Security
 
 on:
   pull_request:
