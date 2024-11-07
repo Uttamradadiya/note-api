@@ -37,13 +37,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '22.11.0'  # Ensure correct Node.js version
+          node-version: '22.11.0'
 
-      # Install Snyk
       - name: Install Snyk CLI
         run: npm install -g snyk
 
