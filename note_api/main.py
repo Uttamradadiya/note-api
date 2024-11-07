@@ -9,12 +9,18 @@ from starlette.responses import RedirectResponse
 from .backends import Backend, RedisBackend, MemoryBackend, GCSBackend
 from .model import Note, CreateNoteRequest
 
+# Initialize the FastAPI app
 app = FastAPI()
 
+# Global variable for backend selection (set initially to None)
 my_backend: Optional[Backend] = None
 
 
 def get_backend() -> Backend:
+    """
+        LE
+
+    """
     global my_backend  # pylint: disable=global-statement
     if my_backend is None:
         backend_type = getenv('BACKEND', 'memory')
