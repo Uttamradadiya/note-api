@@ -23,7 +23,7 @@ jobs:
       - name: Run Pylint
         run: |
           pip install pylint
-          pylint taskman
+          pylint ./note-api
       - name: Run pytest
         run: pytest --cov=note_api -n auto
       - name: Upload coverage to Codcov
