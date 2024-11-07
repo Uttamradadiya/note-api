@@ -1,4 +1,4 @@
-name: Run test suite on PR
+name: Upload the Docker Image
 
 on:
   pull_request:
