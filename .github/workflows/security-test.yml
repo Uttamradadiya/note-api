@@ -20,6 +20,10 @@ jobs:
         run: pip install -r requirements.txt
       - name: Install development dependencies
         run: pip install -r requirements-dev.txt
+      - name: Run Pylint
+        run: |
+          pip install pylint
+          pylint taskman
       - name: Run pytest
         run: pytest --cov=note_api -n auto
       - name: Upload coverage to Codcov
