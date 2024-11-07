@@ -31,22 +31,25 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
  
-
   security_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set up Snyk
-        uses: snyk/actions
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          version: 'latest'
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          node-version: '22.11.0'  # Ensure correct Node.js version
 
+      # Install Snyk
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      # Enable debug mode and run snyk test
       - name: Run Snyk security scan
-        run: snyk test
+        run: DEBUG=* snyk test --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
